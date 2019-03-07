@@ -1,11 +1,15 @@
 .gradle
 /build/
+*/build/
 */gradle/
 *.xml
 *.jar
 *.properties
 *.iml
-
+*.bat
+*/gradle*
+Client/gradlew
+Client/gradlew.bat
 # Ignore Gradle GUI config
 gradle-app.setting
 

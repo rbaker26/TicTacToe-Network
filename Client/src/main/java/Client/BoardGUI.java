@@ -80,11 +80,10 @@ public class BoardGUI extends GridPane {
 
             if(node instanceof Pane) {
                 image = (ImageView) ((Pane) node).getChildren().get(0);
-                int x = GridPane.getColumnIndex(node);
-                int y = GridPane.getRowIndex(node);
+                int columnIndex = GridPane.getColumnIndex(node);
+                int rowIndex = GridPane.getRowIndex(node);
 
-                // TODO This is terrible. Characters are garbage.
-                switch(currentBoard.getPos(x, y)) {
+                switch(currentBoard.getPos(rowIndex, columnIndex)) {
                     case 'X':
                         image.setImage(xImg);
                         break;

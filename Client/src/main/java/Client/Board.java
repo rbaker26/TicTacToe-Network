@@ -15,10 +15,10 @@ public class Board implements Serializable {
     //***************************************************************************
     // Data
     //***************************************************************************
-    final int BOARD_SIZE_X = 3;
-    final int BOARD_SIZE_Y = 3;
+    final int ROW_COUNT = 3;
+    final int COL_COUNT = 3;
     final char DEFAULT_VALUE = ' ';
-    private char[][] boardArray = new char[BOARD_SIZE_X][BOARD_SIZE_Y];
+    private char[][] boardArray = new char[ROW_COUNT][COL_COUNT];
     //***************************************************************************
 
 
@@ -32,8 +32,8 @@ public class Board implements Serializable {
      */
     public Board() {
         // Set Default-Board to all spaces
-        for(int i = 0; i < BOARD_SIZE_X; ++i) {
-            for(int j = 0; j < BOARD_SIZE_Y; ++j) {
+        for(int i = 0; i < ROW_COUNT; ++i) {
+            for(int j = 0; j < COL_COUNT; ++j) {
                 boardArray[i][j] = DEFAULT_VALUE;
             }
         }
@@ -46,9 +46,9 @@ public class Board implements Serializable {
      * @author Bob Baker
      */
     public Board(char[][] boardArray) {
-        this.boardArray = new char[this.BOARD_SIZE_X][this.BOARD_SIZE_Y];
-        for(int i = 0; i < this.BOARD_SIZE_X; i++) {
-            for( int j = 0; j < this.BOARD_SIZE_Y; j++) {
+        this.boardArray = new char[this.ROW_COUNT][this.COL_COUNT];
+        for(int i = 0; i < this.ROW_COUNT; i++) {
+            for(int j = 0; j < this.COL_COUNT; j++) {
                 this.boardArray[i][j] = boardArray[i][j];
             }
         }
@@ -72,21 +72,21 @@ public class Board implements Serializable {
     //***************************************************************************
     /**
      * Sets the value of one position on the Board.
-     * @param x
-     * @param y
+     * @param row
+     * @param col
      * @param c
      * @throws IllegalArgumentException
      * @author Bob Baker
      */
-    public void setPos(int x, int y, char c) {
+    public void setPos(int row, int col, char c) {
         // Check Bounds - Throw RT-Expt if not in bounds
-        if((x > BOARD_SIZE_X || y > BOARD_SIZE_Y) || (x < 0 || y < 0))  {
+        if((row > ROW_COUNT || col > COL_COUNT) || (row < 0 || col < 0))  {
             String error = String.format("INVALID XY CHORD (%d,%d): Must be bounded by " +
-                    "(BOARD_SIZE_X,BOARD_SIZE_Y)(%d,%d)",x,y,BOARD_SIZE_X,BOARD_SIZE_Y);
+                    "(ROW_COUNT,COL_COUNT)(%d,%d)",row,col, ROW_COUNT, COL_COUNT);
             throw new IllegalArgumentException(error);
         }
         else {
-            boardArray[y][x] = c;
+            boardArray[row][col] = c;
         }
     }
     //***************************************************************************
@@ -95,20 +95,20 @@ public class Board implements Serializable {
     //***************************************************************************
     /**
      * Returns the char value at a given position on the Board.
-     * @param x
-     * @param y
+     * @param row
+     * @param col
      * @return (char) value
      * @throws IllegalArgumentException
      * @author Bob Baker
      */
-    public char getPos(int x, int y) {
+    public char getPos(int row, int col) {
         // Check Bounds - Throw RT-Expt if not in bounds
-        if ((x > BOARD_SIZE_X || y > BOARD_SIZE_Y) || (x < 0 || y < 0)) {
+        if ((row > ROW_COUNT || col > COL_COUNT) || (row < 0 || col < 0)) {
             String error = String.format("INVALID XY CHORD (%d,%d): Must be bounded by " +
-                    "(BOARD_SIZE_X,BOARD_SIZE_Y)(%d,%d)", x, y, BOARD_SIZE_X, BOARD_SIZE_Y);
+                    "(ROW_COUNT,COL_COUNT)(%d,%d)", row, col, ROW_COUNT, COL_COUNT);
             throw new IllegalArgumentException(error);
         } else {
-            return boardArray[y][x];
+            return boardArray[row][col];
         }
     }
     //***************************************************************************
@@ -122,7 +122,7 @@ public class Board implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(boardArray,DEFAULT_VALUE,BOARD_SIZE_X,BOARD_SIZE_Y);
+        return Objects.hash(boardArray,DEFAULT_VALUE, ROW_COUNT, COL_COUNT);
     }
     //***************************************************************************
 
@@ -140,8 +140,8 @@ public class Board implements Serializable {
             Board board= (Board) obj;
             return (Arrays.deepEquals(this.boardArray, board.boardArray)     &&
                     Objects.equals(this.DEFAULT_VALUE, board.DEFAULT_VALUE) &&
-                    Objects.equals(this.BOARD_SIZE_X, board.BOARD_SIZE_X)   &&
-                    Objects.equals(this.BOARD_SIZE_Y, board.BOARD_SIZE_Y)     );
+                    Objects.equals(this.ROW_COUNT, board.ROW_COUNT)   &&
+                    Objects.equals(this.COL_COUNT, board.COL_COUNT)     );
         }
         else {
             return false;
@@ -162,8 +162,8 @@ public class Board implements Serializable {
     public String toString() {
         char delim = ' ';
         StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < BOARD_SIZE_X; ++i) {
-            for(int j = 0; j < BOARD_SIZE_Y; ++j) {
+        for(int i = 0; i < ROW_COUNT; ++i) {
+            for(int j = 0; j < COL_COUNT; ++j) {
                 sb.append(boardArray[i][j]);
                 //sb.append(delim);
             }
@@ -184,8 +184,8 @@ public class Board implements Serializable {
     public int numEmptySpaces(){
         int count = 0;
 
-        for(int i = 0; i < BOARD_SIZE_X; i++) {
-            for(int j= 0; j < BOARD_SIZE_Y; j++){
+        for(int i = 0; i < ROW_COUNT; i++) {
+            for(int j = 0; j < COL_COUNT; j++){
                 if(boardArray[i][j] == DEFAULT_VALUE) {
                     count++;
                 }

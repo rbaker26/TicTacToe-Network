@@ -18,6 +18,10 @@ public class App extends Application {
         primaryStage.show();
 
         System.out.println(new App().getGreeting());
+
+        Board b = new Board();
+        b.setPos(2, 1, 'O');
+        board.drawBoard(b);
     }
 
     public static void main(String[] args) {

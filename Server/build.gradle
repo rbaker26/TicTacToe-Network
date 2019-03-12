@@ -33,4 +33,4 @@ dependencies {
 }
 
 // Define the main class for the application
-mainClassName = 'cs4b.proj2.main'
+mainClassName = 'cs4b.proj2.TicTacToeServer'

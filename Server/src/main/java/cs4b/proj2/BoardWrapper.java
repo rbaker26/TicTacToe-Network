@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 //************************************************************************************
 public class BoardWrapper implements Serializable {
-
+    private static final long serialVersionUID = 6529685098267757111L;
     //***************************************************************************
     private P_FLAGS flag;
     private Board board;

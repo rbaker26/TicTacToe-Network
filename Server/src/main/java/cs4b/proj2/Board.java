@@ -12,6 +12,7 @@ import java.util.*;
  * @author Bob Baker
  */
 public class Board implements Serializable {
+    private static final long serialVersionUID = 6529685098267757999L;
 
     //***************************************************************************
     // Data

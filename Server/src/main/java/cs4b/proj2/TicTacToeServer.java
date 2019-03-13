@@ -13,12 +13,14 @@ public class TicTacToeServer
     public void startServer() {
         try
         {
+            System.out.println("Top of loop");
             sSocket = new ServerSocket(PORT);
             System.out.println("Server socket opened");
             while (true) {
                 Socket client = sSocket.accept();
                 ClientConnection cConn = new ClientConnection(client);
-                switch(cConn.readInit().flag) {
+                InitWrapper iw = cConn.readInit();
+                switch(iw.flag) {
                     case CREATE:
                         Lobby lobby = new Lobby(cConn, cConn.hashCode());
                         rooms.put(cConn.hashCode(), lobby);
@@ -26,11 +28,14 @@ public class TicTacToeServer
                         System.out.println("New lobby created");
                         break;
                     case JOIN:
-                        if(rooms.get(cConn.readInit().roomID).isAvailable) {
+                        System.out.println("Top of join");
+                        if(rooms.get(iw.roomID).isAvailable) {
                             System.out.println("Joining lobby");
-                            rooms.get(cConn.readInit().roomID).addPlayer(cConn);
-                            cConn.writeInit(new InitWrapper(P_FLAGS.GAME_JOINED, "", cConn.getToken(), cConn.hashCode()));
-                            Thread lobbyThread = new Thread(rooms.get(cConn.readInit().roomID));
+                            rooms.get(iw.roomID).addPlayer(cConn);
+                            System.out.println("TEST: player joined: " + cConn.getName() + " token: " + cConn.getToken());
+                            cConn.writeInit(new InitWrapper(P_FLAGS.GAME_JOINED, cConn.getName(), cConn.getToken(), iw.roomID));
+                            rooms.get(iw.roomID).broadcastStart();
+                            Thread lobbyThread = new Thread(rooms.get(iw.roomID));
                             lobbyThread.start();
                         } else {
                             System.out.println("Lobby full, rejecting player");
@@ -67,11 +72,16 @@ public class TicTacToeServer
         }
 
         public void run() {
+            System.out.println("board: " + board);
             currentPlayer = player1;
             while(!gameOver) {
                 MoveWrapper move;
                 try {
                     do {
+                        System.out.println("SENDING MOVE REQUEST WITH BOARD:");
+                        System.out.println(board);
+//                        ObjectOutputStream testOS = new ObjectOutputStream(System.out);
+//                        testOS.writeObject(board);
                         currentPlayer.write(new BoardWrapper(P_FLAGS.REQUEST_MV, board));
                         move = currentPlayer.readMove();
                         if(move == null) {
@@ -82,7 +92,10 @@ public class TicTacToeServer
                             }
                         }
                     } while(!isValid(move.row, move.col));
+                    System.out.println("Move received: row: " + move.row + " col: " + move.col + " token: " + move.token);
                     board.setPos(move.row, move.col, move.token);
+                    System.out.println("Test: board after board.setPos:");
+                    System.out.println(board);
                     if(isWon(currentPlayer.getToken())) {
                         if(currentPlayer.getToken() == 'x') {
                             broadcast(new BoardWrapper(P_FLAGS.P1_WIN, board));
@@ -177,6 +190,15 @@ public class TicTacToeServer
             }
             this.isAvailable = false;
         }
+        public void broadcastStart() {
+            try {
+                player1.writeInit(new InitWrapper(P_FLAGS.GAME_JOINED, player2.getName(), player2.getToken(), this.lobbyID));
+                player2.writeInit(new InitWrapper(P_FLAGS.GAME_JOINED, player1.getName(), player1.getToken(), this.lobbyID));
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
     }
   //this class manages a client connection
       class ClientConnection {
@@ -210,14 +232,20 @@ public class TicTacToeServer
           }
 
           public MoveWrapper readMove() throws Exception {
-              if(is.readObject() instanceof MoveWrapper) {
-                  return (MoveWrapper) is.readObject();
+              Object o = is.readObject();
+              if(o instanceof MoveWrapper) {
+                  System.out.println("Move received: col" + ((MoveWrapper)o).col + " row " + ((MoveWrapper)o).row);
+                  return (MoveWrapper)o;
               }
               return null;
           }
 
           public InitWrapper readInit() throws Exception {
-              InitWrapper init = (InitWrapper) is.readObject();
+              Object o = is.readObject();
+              if(o instanceof InitWrapper) {
+                  System.out.println("Instance of checks");
+              }
+              InitWrapper init = (InitWrapper)o;
               if(init.flag == P_FLAGS.CREATE) {
                   this.token = init.token;
               }
@@ -231,10 +259,12 @@ public class TicTacToeServer
 
           public void writeInit(InitWrapper message) throws Exception {
               os.writeObject(message);
+              os.flush();
           }
 
           public void write(BoardWrapper message) throws Exception {
               os.writeObject(message);
+              os.flush();
           }
 
           @Override

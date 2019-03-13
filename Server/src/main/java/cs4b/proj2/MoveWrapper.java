@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 //************************************************************************************
 public class MoveWrapper implements Serializable {
-
+    private static final long serialVersionUID = 6529685098267757780L;
     //***************************************************************************
     public int row;
     public int col;

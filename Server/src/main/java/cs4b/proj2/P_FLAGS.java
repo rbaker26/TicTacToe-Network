@@ -1,6 +1,8 @@
 package cs4b.proj2;
 
-enum P_FLAGS {
+import java.io.Serializable;
+
+enum P_FLAGS implements Serializable {
     CREATE,
     JOIN,
     P1_WIN,

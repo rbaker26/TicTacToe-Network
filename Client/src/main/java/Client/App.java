@@ -1,4 +1,4 @@
-
+/*
 package Client;
 
 import javafx.application.Application;
@@ -29,3 +29,61 @@ public class App extends Application {
     }
 
 }
+*/
+
+
+package Client;
+
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.io.File;
+
+
+public class App extends Application {
+
+    //Observer Signal- main captures, then it will call the board ui.
+
+    Stage primaryStage;
+    Parent root;
+    Scene startScene;
+    Scene boardScene;
+    BoardGUI board;
+    File file = new File("gameState");
+
+    //Controller controlObject;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+
+
+        this.primaryStage = primaryStage;
+
+        startScene = new Scene(root, 360, 450);
+
+
+        primaryStage.setResizable(true);
+
+        primaryStage.setScene(startScene);
+
+        primaryStage.show();
+
+    }
+}
+

@@ -263,8 +263,10 @@ public class TicTacToeServer
           }
 
           public void write(BoardWrapper message) throws Exception {
+              //os.writeUnshared(message);
               os.writeObject(message);
               os.flush();
+              os.reset();
           }
 
           @Override

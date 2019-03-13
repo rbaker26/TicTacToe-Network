@@ -1,5 +1,4 @@
-package Client;
-import com.sun.glass.ui.Application;
+package cs4b.proj2;
 
 import java.net.*;
 import java.io.*;
@@ -10,37 +9,66 @@ public class ClientService implements Runnable{
     Socket socket;
     ObjectOutputStream os;
     ObjectInputStream is;
-
+    Scanner sc = new Scanner(System.in);
     @Override
     public void run() {
 
         try {
-            Scanner sc = new Scanner(System.in);
 
             sendInit(new InitWrapper(P_FLAGS.CREATE, "bobby", 'x',0));
             InitWrapper iw = getInit();
 
+            //todo
+            // store the token for p2 in the p2 client or else the p2 will not know what therir thing is
+
             System.out.println(iw.roomID);
+            iw = getInit();
+            System.out.print("Player2:\t");
+            System.out.println(iw.playerName +" " +  iw.token);
+            BoardWrapper bw;
             while (true) {
 
+                bw = getBoardWrapper();
+                System.out.println(bw.getBoard());
 
+                int row;
+                int col;
+                if(bw.getFlag() == P_FLAGS.REQUEST_MV) {
+                    System.out.println("Row:\t");
+                    if(sc.hasNext()) {
+                        row = sc.nextInt();
+                    }
+                   // sc.next();
+                    System.out.println("Col:\t");
+                   // col = sc.nextInt();
+                   // sendMove(new MoveWrapper(row,col,'x'));
+                    sendMove(new MoveWrapper(1,2,'x'));
+                }
+                else if(bw.getFlag() == P_FLAGS.ERROR_FATAL) {
+                    System.out.println("bad move bruh");
 
-                BoardWrapper bw = getBoardWrapper();
+                }
 
-                int i;
-                int j;
-                i = sc.nextInt();
-                sc.next();
-                j = sc.nextInt();
-                sendMove(new MoveWrapper(j,i,'x'));
-                bw= getBoardWrapper();
-
-                System.out.println(bw.getBoard().toString());
+//                bw= getBoardWrapper();
+//                System.out.println(bw.getBoard().toString());
+                System.out.println();
+                System.out.println();
+//                int i;
+//                int j;
+//                i = sc.nextInt();
+//                sc.next();
+//                j = sc.nextInt();
+//                sendMove(new MoveWrapper(j,i,'x'));
+//                bw= getBoardWrapper();
+//
+//                System.out.println(bw.getBoard().toString());
 
             }
         }
         catch (Exception e) {
             System.out.println("ERORRR");
+            System.out.println(e);
+            e.printStackTrace();
 
         }
     }

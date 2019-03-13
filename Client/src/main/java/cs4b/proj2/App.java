@@ -1,8 +1,7 @@
 
-package Client;
+package cs4b.proj2;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -30,7 +29,8 @@ public class App extends Application {
     public static void main(String[] args) {
 
         try{
-            ClientService cs = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464) );
+           // ClientService cs = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464) );
+            ClientService cs = new ClientService(new IPAddress("25.71.105.24"), new PortWrapper(6464) );
             cs.run();
         }
         catch(IOException ioe) {

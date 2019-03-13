@@ -1,4 +1,4 @@
-package Client;
+package cs4b.proj2;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;

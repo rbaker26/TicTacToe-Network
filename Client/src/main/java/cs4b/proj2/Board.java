@@ -1,4 +1,4 @@
-package Client;
+package cs4b.proj2;
 import java.io.Serializable;
 import java.util.*;
 
@@ -11,7 +11,7 @@ import java.util.*;
  * @author Bob Baker
  */
 public class Board implements Serializable {
-
+    private static final long serialVersionUID = 6529685098267757999L;
     //***************************************************************************
     // Data
     //***************************************************************************

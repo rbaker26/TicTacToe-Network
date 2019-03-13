@@ -31,8 +31,8 @@ public class ClientService implements Runnable{
                 bw = getBoardWrapper();
                 System.out.println(bw.getBoard());
 
-                int row;
-                int col;
+                int row = 0;
+                int col = 0;
                 if(bw.getFlag() == P_FLAGS.REQUEST_MV) {
                     System.out.println("Row:\t");
                     if(sc.hasNext()) {
@@ -42,7 +42,7 @@ public class ClientService implements Runnable{
                     System.out.println("Col:\t");
                    // col = sc.nextInt();
                    // sendMove(new MoveWrapper(row,col,'x'));
-                    sendMove(new MoveWrapper(1,2,'x'));
+                    sendMove(new MoveWrapper(col,row++,'x'));
                 }
                 else if(bw.getFlag() == P_FLAGS.ERROR_FATAL) {
                     System.out.println("bad move bruh");
@@ -121,7 +121,8 @@ public class ClientService implements Runnable{
 
     //***************************************************************************
     public BoardWrapper getBoardWrapper() throws IOException, ClassNotFoundException {
-        BoardWrapper ret = (BoardWrapper) is.readObject();
+        BoardWrapper ret = (BoardWrapper) is.readUnshared();
+      //  is.readUnshared();
         return ret;
     }
     //***************************************************************************

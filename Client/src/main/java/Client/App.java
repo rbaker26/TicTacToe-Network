@@ -55,7 +55,7 @@ public class App extends Application {
 
     //Observer Signal- main captures, then it will call the board ui.
 
-    Stage primaryStage;
+    private static Stage primaryStage;
     Parent root;
     Scene startScene;
     Scene boardScene;
@@ -84,6 +84,14 @@ public class App extends Application {
 
         primaryStage.show();
 
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        App.primaryStage = primaryStage;
+    }
+
+    public static Stage getPrimaryStage(){
+        return primaryStage;
     }
 }
 

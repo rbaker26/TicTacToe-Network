@@ -1,11 +1,16 @@
 package Client;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.event.ActionEvent;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class Controller {
 
@@ -62,7 +67,29 @@ public class Controller {
         //multiplayer - prompt a window that asks for IP address from user.
         //Call Socket class object to pass in IP address and port 6464.
 
+
         int port = 6464;
+
+
+        GridPane mainPane = new GridPane();
+        mainPane.setAlignment(Pos.CENTER);
+        mainPane.setHgap(10);
+        mainPane.setVgap(10);
+        mainPane.setPadding(new Insets(25, 25, 25,25));
+
+        Label playerName = new Label("Enter your name: ");
+        mainPane.add(playerName, 0, 1);
+
+        TextField typeInName = new TextField();
+        mainPane.add(typeInName, 1, 1);
+
+
+
+        //goes to the very bottom:
+        Scene scene = new Scene(mainPane, 300, 300);
+        App.getPrimaryStage().setScene(scene);
+        App.getPrimaryStage().show();
+
 
     }
 

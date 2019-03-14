@@ -59,6 +59,51 @@ public class Controller {
         return player2;
     }
 
+    public void PlayerCredentials() {
+
+        GridPane mainPane = new GridPane();
+        mainPane.setAlignment(Pos.CENTER);
+        mainPane.setHgap(10);
+        mainPane.setVgap(10);
+        mainPane.setPadding(new Insets(25, 25, 25, 25));
+
+        Label playerName = new Label("Enter your name: ");
+        mainPane.add(playerName, 0, 1);
+
+        TextField typeInName = new TextField();
+        mainPane.add(typeInName, 1, 1);
+
+        Label buttonInstructions = new Label("Choose your token:");
+
+        mainPane.add(buttonInstructions, 0, 2);
+
+
+
+        RadioButton xButton = new RadioButton("X");
+        RadioButton oButton = new RadioButton("O");
+
+        final ToggleGroup symbolGroup = new ToggleGroup();
+        xButton.setToggleGroup(symbolGroup);
+        oButton.setToggleGroup(symbolGroup);
+
+        HBox symbolBox = new HBox(10);
+
+        symbolBox.getChildren().addAll(xButton, oButton);
+
+        mainPane.add(symbolBox, 1, 2);
+
+
+        //goes to the very bottom:
+        Scene scene = new Scene(mainPane, 500, 300);
+
+        // mainPane.setResizable(false);
+        App.getPrimaryStage().setScene(scene);
+        App.getPrimaryStage().show();
+
+
+    }
+
+    //When Create Room is clicked button1Click() is called.
     @FXML
     private void button1Click() {
 
@@ -71,24 +116,7 @@ public class Controller {
         int port = 6464;
 
 
-        GridPane mainPane = new GridPane();
-        mainPane.setAlignment(Pos.CENTER);
-        mainPane.setHgap(10);
-        mainPane.setVgap(10);
-        mainPane.setPadding(new Insets(25, 25, 25,25));
 
-        Label playerName = new Label("Enter your name: ");
-        mainPane.add(playerName, 0, 1);
-
-        TextField typeInName = new TextField();
-        mainPane.add(typeInName, 1, 1);
-
-
-
-        //goes to the very bottom:
-        Scene scene = new Scene(mainPane, 300, 300);
-        App.getPrimaryStage().setScene(scene);
-        App.getPrimaryStage().show();
 
 
     }

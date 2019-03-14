@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -38,7 +37,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Info">
             <items>
-              <MenuItem mnemonicParsing="false" text="About Our Game: &#10;Tic Tac Toe Game JavaFX implementation created by &#10;CS4B group members: Bobby, Keane, Naomi, Daniel. &#10;This is the first group project for our advance java class. &#10;Player is able to compete against another player, play &#10;against the computer in an easy level, or play against &#10;the computer in a hard level. Concepts of minimax &#10;search is implemented for a competitive AI. Player 1&#10;is 'X' and goes first, and player 2 is 'O'.&#10;" />
+              <MenuItem mnemonicParsing="false" text="About Our Game: &#10;Tic Tac Toe Game JavaFX implementation created by &#10;CS4B group members: Bobby, Keane, Naomi, Daniel. &#10;This is the second part to our first group project for our advance java class. &#10;Player is able to compete against another player, play &#10;against the computer in an easy level, or play against &#10;the computer in a hard level. Concepts of minimax &#10;search is implemented for a competitive AI. Networking with &#10;Client and Server implementation is used for computer connections.&#10;To play against another player, the user must either create a new room &#10;or join a room that is currently pending for a second player.&#10;Players are able to enter their usernames and pick their &#10;symbol as either 'X' or 'O' unless defaulted to a certain token." />
             </items>
           </Menu>
         </menus>

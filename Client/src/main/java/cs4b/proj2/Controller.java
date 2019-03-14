@@ -17,6 +17,7 @@ public class Controller {
     private RadioButton xButton;
     private RadioButton oButton;
     private TextField nameField;
+    private TextField ipField;
     private NumberTextField roomNumberField;
 
     private String getName() {
@@ -76,6 +77,8 @@ public class Controller {
             oButton.selectedProperty().setValue(true);
         }
 
+        ipField = new TextField();
+
         Button submitButton = new Button("Submit");
         submitButton.defaultButtonProperty().setValue(true);
         submitButton.setOnAction(submitAction);
@@ -91,9 +94,11 @@ public class Controller {
         mainPane.add(nameField, 1, 1);
         mainPane.add(new Label("Choose your token:"), 0, 2);
         mainPane.add(symbolBox, 1, 2);
+        mainPane.add(new Label("Host IP address: "), 0, 3);
+        mainPane.add(ipField, 1, 3);
 
-        mainPane.add(cancelButton, 0, 3);
-        mainPane.add(submitButton, 1, 3);
+        mainPane.add(cancelButton, 0, 4);
+        mainPane.add(submitButton, 1, 4);
 
 
 
@@ -104,6 +109,7 @@ public class Controller {
         App.getPrimaryStage().setScene(scene);
         App.getPrimaryStage().show();
     }
+
 
     public void showClientDialog(Scene origScene, EventHandler<ActionEvent> submitAction) {
 
@@ -119,6 +125,8 @@ public class Controller {
 
         roomNumberField = new NumberTextField();
 
+        ipField = new TextField();
+
         Button submitButton = new Button("Submit");
         submitButton.defaultButtonProperty().setValue(true);
         submitButton.setOnAction(submitAction);
@@ -133,9 +141,11 @@ public class Controller {
         mainPane.add(nameField, 1, 1);
         mainPane.add(new Label("Room number:"), 0, 2);
         mainPane.add(roomNumberField, 1, 2);
+        mainPane.add(new Label("Host IP address: "), 0, 3);
+        mainPane.add(ipField, 1, 3);
 
-        mainPane.add(cancelButton, 0, 3);
-        mainPane.add(submitButton, 1, 3);
+        mainPane.add(cancelButton, 0, 4);
+        mainPane.add(submitButton, 1, 4);
 
 
 

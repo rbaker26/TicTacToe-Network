@@ -31,9 +31,9 @@ public class BoardGUI extends GridPane {
 
     BoardGUI() {
         try {
-            xImg = new Image(new FileInputStream("src/main/resources/Client/img/X.png"));
-            oImg = new Image(new FileInputStream("src/main/resources/Client/img/O.png"));
-            emptyImg = new Image(new FileInputStream("src/main/resources/Client/img/Empty.png"));
+            xImg = new Image(new FileInputStream("src/main/resources/cs4b/proj2/img/X.png"));
+            oImg = new Image(new FileInputStream("src/main/resources/cs4b/proj2/img/O.png"));
+            emptyImg = new Image(new FileInputStream("src/main/resources/cs4b/proj2/img/Empty.png"));
         }
         catch(Exception ex) {
             System.out.println("File not found");

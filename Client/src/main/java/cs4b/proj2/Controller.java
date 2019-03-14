@@ -176,7 +176,6 @@ public class Controller {
                     // TODO Add your PVP room creation code here
                     System.out.println("My name is " + getName());
                     System.out.println("My symbol is " + getSymbol());
-                    App.getPrimaryStage().setScene(new Scene(bg, 300, 300));
                     try {
                         ClientService player1 = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464), bg, null, getName(), getSymbol(), 0, P_FLAGS.CREATE);
                         Thread thread1 = new Thread(player1);
@@ -186,7 +185,7 @@ public class Controller {
                     catch(Exception ex) {
                         ex.printStackTrace();
                     }
-
+                    App.getPrimaryStage().setScene(new Scene(bg, 300, 300));
                 });
 
 

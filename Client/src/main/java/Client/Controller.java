@@ -162,6 +162,7 @@ public class Controller {
         showRoomSetupDialog(
                 App.getPrimaryStage().getScene(),
                 (ActionEvent event) -> {
+                    // TODO Add your PVP room creation code here
                     System.out.println("My name is " + getName());
                     System.out.println("My symbol is " + getSymbol());
                 });
@@ -181,6 +182,7 @@ public class Controller {
         showRoomSetupDialog(
                 App.getPrimaryStage().getScene(),
                 (ActionEvent event) -> {
+                    // TODO Add your PVE with dumb AI here
                     System.out.println("My name is " + getName());
                     System.out.println("My symbol is " + getSymbol());
                 });
@@ -196,6 +198,7 @@ public class Controller {
         showRoomSetupDialog(
                 App.getPrimaryStage().getScene(),
                 (ActionEvent event) -> {
+                    // TODO Add your PVE with smart AI here
                     System.out.println("My name is " + getName());
                     System.out.println("My symbol is " + getSymbol());
                 });
@@ -212,6 +215,7 @@ public class Controller {
                     try {
                         int roomNumber = Integer.parseInt(roomNumberField.getText());
 
+                        // TODO Add your PVP room joining code here
                         System.out.println("My name is " + getName());
                         System.out.println("The room is " + roomNumber);
                     } catch(NumberFormatException exception) {

@@ -29,7 +29,10 @@ public class TicTacToeServer
                         break;
                     case JOIN:
                         System.out.println("Top of join");
-                        if(rooms.get(iw.roomID).isAvailable) {
+                        if(!rooms.containsKey(iw.roomID)) {
+                            cConn.writeInit(new InitWrapper(P_FLAGS.ERROR_FATAL, cConn.getName(), cConn.getToken(), iw.roomID));
+                        }
+                        else if(rooms.get(iw.roomID).isAvailable) {
                             System.out.println("Joining lobby");
                             rooms.get(iw.roomID).addPlayer(cConn);
                             System.out.println("TEST: player joined: " + cConn.getName() + " token: " + cConn.getToken());
@@ -99,12 +102,15 @@ public class TicTacToeServer
                     if(isWon(currentPlayer.getToken())) {
                         if(currentPlayer.getToken() == 'x') {
                             broadcast(new BoardWrapper(P_FLAGS.P1_WIN, board));
+                            gameOver = true;
                         } else {
                             broadcast(new BoardWrapper(P_FLAGS.P2_WIN, board));
+                            gameOver = true;
                         }
                     }
                     else if(isFull()) {
                         broadcast(new BoardWrapper(P_FLAGS.TIE, board));
+                        gameOver = true;
                     }
                     else if(player1turn) {
                         currentPlayer = player2;
@@ -113,6 +119,26 @@ public class TicTacToeServer
                         currentPlayer = player1;
                         player1turn = true;
                     }
+                }
+                catch(SocketException ex) {
+                    System.out.println("Socket exception caught!");
+                    gameOver = true;
+                    try {
+                        player1.write(new BoardWrapper(P_FLAGS.GAME_OVER, board));
+                    }
+                    catch(Exception ex2) {
+                        System.out.println("lols");
+                    }
+                    try {
+                        player2.write(new BoardWrapper(P_FLAGS.GAME_OVER, board));
+                    }
+                    catch(Exception ex2) {
+                        System.out.println("lols");
+                    }
+                }
+                catch(EOFException ex) {
+                    System.out.println("EOF Exception caught!");
+                    gameOver = true;
                 }
                 catch(Exception ex) {
                     ex.printStackTrace();
@@ -232,25 +258,27 @@ public class TicTacToeServer
           }
 
           public MoveWrapper readMove() throws Exception {
-              Object o = is.readObject();
-              if(o instanceof MoveWrapper) {
-                  System.out.println("Move received: col" + ((MoveWrapper)o).col + " row " + ((MoveWrapper)o).row);
-                  return (MoveWrapper)o;
+              try {
+                  MoveWrapper move = (MoveWrapper)is.readObject();
+                  return move;
               }
-              return null;
+              catch(Exception ex) {
+                  return null;
+              }
           }
 
-          public InitWrapper readInit() throws Exception {
-              Object o = is.readObject();
-              if(o instanceof InitWrapper) {
-                  System.out.println("Instance of checks");
+          public InitWrapper readInit() {
+              try{
+                  InitWrapper init = (InitWrapper)is.readObject();
+                  if(init.flag == P_FLAGS.CREATE) {
+                      this.token = init.token;
+                  }
+                  this.playerName = init.playerName;
+                  return init;
               }
-              InitWrapper init = (InitWrapper)o;
-              if(init.flag == P_FLAGS.CREATE) {
-                  this.token = init.token;
+              catch(Exception ex){
+                  return null;
               }
-              this.playerName = init.playerName;
-              return init;
           }
 
           public void setToken(char token) {
@@ -260,11 +288,13 @@ public class TicTacToeServer
           public void writeInit(InitWrapper message) throws Exception {
               os.writeObject(message);
               os.flush();
+              os.reset();
           }
 
           public void write(BoardWrapper message) throws Exception {
               os.writeObject(message);
               os.flush();
+              os.reset();
           }
 
           @Override

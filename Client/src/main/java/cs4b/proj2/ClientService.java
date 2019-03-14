@@ -47,10 +47,10 @@ public class ClientService implements Runnable{
 
         try {
 
-            sendInit(new InitWrapper(P_FLAGS.CREATE, "bobby", 'x',0));
-            bg.setMyToken('x');
-            InitWrapper iw = getInit();
+            sendInit(new InitWrapper(P_FLAGS.JOIN, "keane", ' ',1319988438));
 
+            InitWrapper iw = getInit();
+            bg.setMyToken(iw.token);
             //todo
             // store the token for p2 in the p2 client or else the p2 will not know what therir thing is
 
@@ -60,7 +60,6 @@ public class ClientService implements Runnable{
             System.out.println(iw.playerName +" " +  iw.token);
             BoardWrapper bw;
             int index = 0;
-            bg.toggleTurn();
 
             while (true) {
 
@@ -77,12 +76,17 @@ public class ClientService implements Runnable{
                   //  System.out.println("Col:\t");
                    // col = sc.nextInt();
                    // sendMove(new MoveWrapper(row,col,'x'));
+                    bg.toggleTurn();
                     bg.drawBoard(bw.getBoard());
                     //Pair<Integer,Integer> mov = moves.get(index);
                     Pair<Integer,Integer> mov = bg.getNextMove();
+                    while(mov == null) {
+                        mov = bg.getNextMove();
+                        System.out.println("LOL");
+                    }
                     int i = mov.getKey();
                     int j = mov.getValue();
-                    sendMove(new MoveWrapper(i,j,'x'));
+                    sendMove(new MoveWrapper(i,j,'o'));
                     index++;
                 }
                 else if(bw.getFlag() == P_FLAGS.ERROR_FATAL) {
@@ -91,18 +95,22 @@ public class ClientService implements Runnable{
                 }
                 else if(bw.getFlag() == P_FLAGS.TIE) {
                     System.out.println("TIE");
+                    bg.drawBoard(bw.getBoard());
                     break;
                 }
                 else if(bw.getFlag() == P_FLAGS.P1_WIN) {
                     System.out.println("Player 1 wins");
+                    bg.drawBoard(bw.getBoard());
                     break;
                 }
                 else if(bw.getFlag() == P_FLAGS.P2_WIN) {
                     System.out.println("Player 2 wins");
+                    bg.drawBoard(bw.getBoard());
                     break;
                 }
                 else if(bw.getFlag() == P_FLAGS.GAME_OVER) {
                     System.out.println("Game over, player disconnected");
+                    bg.drawBoard(bw.getBoard());
                     break;
                 }
 

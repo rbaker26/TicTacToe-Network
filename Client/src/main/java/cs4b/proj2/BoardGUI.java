@@ -115,10 +115,10 @@ public class BoardGUI extends GridPane {
                 int rowIndex = GridPane.getRowIndex(node);
 
                 switch(currentBoard.getPos(rowIndex, columnIndex)) {
-                    case 'X':
+                    case 'x':
                         image.setImage(xImg);
                         break;
-                    case 'O':
+                    case 'o':
                         image.setImage(oImg);
                         break;
                     case ' ':

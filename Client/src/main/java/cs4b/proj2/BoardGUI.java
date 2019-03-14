@@ -70,7 +70,7 @@ public class BoardGUI extends GridPane {
 
                                 token.setImage(myToken);
                                 //TODO put code here
-                                toggleTurn();
+                                turnOff();
 //                                nextMove = null;
                             }
 
@@ -87,6 +87,13 @@ public class BoardGUI extends GridPane {
         this.setGridLinesVisible(true);
     }
 
+    public void turnOn() {
+        this.myTurn = true;
+    }
+
+    public void turnOff() {
+        this.myTurn = false;
+    }
 
     public void resetBoard() {
         ObservableList<Node> nodes = this.getChildren();

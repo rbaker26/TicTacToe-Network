@@ -54,6 +54,7 @@ public class ClientService implements Runnable{
             BoardWrapper bw;
             if(flag == P_FLAGS.CREATE) {
                 sendInit(new InitWrapper(P_FLAGS.CREATE, this.name, this.token, 0));
+
             }
             else {
                 sendInit(new InitWrapper(P_FLAGS.JOIN, this.name, this.token, this.gameID));
@@ -67,7 +68,6 @@ public class ClientService implements Runnable{
                 this.gameID = iw.roomID;
                 iw = getInit();
                 int index = 0;
-                bg.toggleTurn();
             while (true) {
 
                 bw = getBoardWrapper();
@@ -85,7 +85,7 @@ public class ClientService implements Runnable{
                    // sendMove(new MoveWrapper(row,col,'x'));
                     if(pb == null) {
                         bg.drawBoard(bw.getBoard());
-                        bg.toggleTurn();
+                        bg.turnOn();
                         //Pair<Integer,Integer> mov = moves.get(index);
 
                         Pair<Integer, Integer> mov = bg.getNextMove();
@@ -97,7 +97,7 @@ public class ClientService implements Runnable{
                         System.out.println("Move Captureed");
                         int i = mov.getKey();
                         int j = mov.getValue();
-                        sendMove(new MoveWrapper(i, j, 'x'));
+                        sendMove(new MoveWrapper(i, j, this.token));
                     }
                     else {
                         PlayerBehavior.MoveInfo mi = pb.getMove(bw.getBoard(), this.token);

@@ -265,7 +265,7 @@ public class Controller {
                         // TODO Add your PVP room joining code here
                         System.out.println("My name is " + getName());
                         System.out.println("The room is " + roomNumber);
-                        App.getPrimaryStage().setScene(new Scene(bg, 300, 300));
+                        //App.getPrimaryStage().setScene(new Scene(bg, 300, 300));
                         try {
                             ClientService player1 = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464), bg, null, getName(), getSymbol(), roomNumber, P_FLAGS.JOIN);
                             Thread thread1 = new Thread(player1);

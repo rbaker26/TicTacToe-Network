@@ -226,89 +226,88 @@ public class TicTacToeServer
             }
         }
     }
-  //this class manages a client connection
-      class ClientConnection {
-          private Socket socket;
-          private ObjectOutputStream os;
-          private ObjectInputStream is;
-          private char token;
-          private String playerName;
+    //this class manages a client connection
+    class ClientConnection {
+        private Socket socket;
+        private ObjectOutputStream os;
+        private ObjectInputStream is;
+        private char token;
+        private String playerName;
 
-          public ClientConnection(Socket s)
-          {
-              try
-              {
+        public ClientConnection(Socket s)
+        {
+            try
+            {
                 socket = s;
                 os = new ObjectOutputStream(socket.getOutputStream());
                 is = new ObjectInputStream(socket.getInputStream());
 
-              }
-              catch(Exception ex)
-              {
+            }
+            catch(Exception ex)
+            {
                 ex.printStackTrace();
-              }
-          }
+            }
+        }
 
-          public char getToken() {
-              return token;
-          }
+        public char getToken() {
+            return token;
+        }
 
-          public String getName() {
-              return playerName;
-          }
+        public String getName() {
+            return playerName;
+        }
 
-          public MoveWrapper readMove() throws Exception {
-              try {
-                  MoveWrapper move = (MoveWrapper)is.readObject();
-                  return move;
-              }
-              catch(Exception ex) {
-                  return null;
-              }
-          }
+        public MoveWrapper readMove() throws Exception {
+            try {
+                MoveWrapper move = (MoveWrapper)is.readObject();
+                return move;
+            }
+            catch(Exception ex) {
+                return null;
+            }
+        }
 
-          public InitWrapper readInit() {
-              try{
-                  InitWrapper init = (InitWrapper)is.readObject();
-                  if(init.flag == P_FLAGS.CREATE) {
-                      this.token = init.token;
-                  }
-                  this.playerName = init.playerName;
-                  return init;
-              }
-              catch(Exception ex){
-                  return null;
-              }
-          }
+        public InitWrapper readInit() {
+            try{
+                InitWrapper init = (InitWrapper)is.readObject();
+                if(init.flag == P_FLAGS.CREATE) {
+                    this.token = init.token;
+                }
+                this.playerName = init.playerName;
+                return init;
+            }
+            catch(Exception ex){
+                return null;
+            }
+        }
 
-          public void setToken(char token) {
-              this.token = token;
-          }
+        public void setToken(char token) {
+            this.token = token;
+        }
 
-          public void writeInit(InitWrapper message) throws Exception {
-              os.writeObject(message);
-              os.flush();
-              os.reset();
-          }
+        public void writeInit(InitWrapper message) throws Exception {
+            os.writeObject(message);
+            os.flush();
+            os.reset();
+        }
 
-          public void write(BoardWrapper message) throws Exception {
-              //os.writeUnshared(message);
-              os.writeObject(message);
-              os.flush();
-              os.reset();
-          }
+        public void write(BoardWrapper message) throws Exception {
+            os.writeObject(message);
+            os.flush();
+            os.reset();
+        }
 
-          @Override
-          public int hashCode() {
+        @Override
+        public int hashCode() {
             return Objects.hash(socket, token, playerName);
-          }
-      }
+        }
+    }
 
     public static void main(String[] args)
     {
-      TicTacToeServer server = new TicTacToeServer();
-      System.out.println("Starting server.....");
-      server.startServer();
+        TicTacToeServer server = new TicTacToeServer();
+        System.out.println("Starting server.....");
+        server.startServer();
     }
 
 }

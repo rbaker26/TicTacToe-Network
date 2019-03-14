@@ -7,6 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
+
 import java.io.FileInputStream;
 
 
@@ -21,9 +23,10 @@ public class BoardGUI extends GridPane {
     private Image xImg;
     private Image oImg;
     private Image emptyImg;
-
+    private boolean myTurn = false;
+    Pair<Integer,Integer> nextMove;
     private boolean xTurn = true;
-
+    private Image myToken;
     BoardGUI() {
         try {
             xImg = new Image(new FileInputStream("src/main/resources/cs4b/proj1/img/X.png"));
@@ -47,10 +50,33 @@ public class BoardGUI extends GridPane {
                     if(event.getButton() == MouseButton.SECONDARY) {
                         this.resetBoard();
                     } else {
-                        //int selectedCol = GridPane.getColumnIndex((Node)event.getSource());
-                        //int selectedRow = GridPane.getRowIndex((Node)event.getSource());
+                        int selectedCol = GridPane.getColumnIndex((Node)event.getSource());
+                        int selectedRow = GridPane.getRowIndex((Node)event.getSource());
 
-                        token.setImage(xImg);
+                        System.out.println(""+ selectedRow + "  " + selectedCol);
+
+
+
+                        if(myTurn /*only do this step it is my turn and if it is valid move*/) {
+
+
+                            if(token.getImage().equals(emptyImg)) {
+                                //this is a valid move
+                                nextMove =  new Pair<>(selectedRow, selectedCol);
+
+
+
+                                token.setImage(myToken);
+                                //TODO put code here
+                                toggleTurn();
+//                                nextMove = null;
+                            }
+
+
+
+
+                        }
+
                     }
                 });
                 this.add(space, col, row);
@@ -71,6 +97,11 @@ public class BoardGUI extends GridPane {
         }
     }
 
+    public Pair<Integer,Integer> getNextMove() {
+        Pair<Integer, Integer> temp = this.nextMove;
+        nextMove = null;
+        return temp;
+    }
     public void drawBoard(Board currentBoard) {
         //System.out.println("Drawing board");
 
@@ -98,9 +129,24 @@ public class BoardGUI extends GridPane {
                 }
             }
         }
+
     }
 
+    public void toggleTurn() {
+        myTurn = !myTurn;
+    }
     static public class Finished {
     }
+
+    public void setMyToken(char token) {
+        if(token == 'x') {
+            this.myToken = xImg;
+        }
+        else {
+            this.myToken = oImg;
+        }
+    }
+
+
 
 }

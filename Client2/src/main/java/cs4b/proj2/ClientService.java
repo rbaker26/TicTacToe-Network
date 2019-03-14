@@ -13,13 +13,8 @@ public class ClientService implements Runnable{
     Socket socket;
     ObjectOutputStream os;
     ObjectInputStream is;
+    Scanner sc = new Scanner(System.in);
     BoardGUI bg;
-    PlayerBehavior pb = null;
-    int gameID;
-    String name;
-    char token;
-    P_FLAGS flag;
-
 
     ArrayList<Pair<Integer,Integer>> moves = new ArrayList<>();
 
@@ -51,23 +46,21 @@ public class ClientService implements Runnable{
 
 
         try {
+
+            sendInit(new InitWrapper(P_FLAGS.JOIN, "keane", ' ',1319988438));
+
+            InitWrapper iw = getInit();
+            bg.setMyToken(iw.token);
+            //todo
+            // store the token for p2 in the p2 client or else the p2 will not know what therir thing is
+
+            System.out.println(iw.roomID);
+            iw = getInit();
+            System.out.print("Player2:\t");
+            System.out.println(iw.playerName +" " +  iw.token);
             BoardWrapper bw;
-            if(flag == P_FLAGS.CREATE) {
-                sendInit(new InitWrapper(P_FLAGS.CREATE, this.name, this.token, 0));
-            }
-            else {
-                sendInit(new InitWrapper(P_FLAGS.JOIN, this.name, this.token, this.gameID));
-            }
-                InitWrapper iw = getInit();
+            int index = 0;
 
-                //todo
-                // store the token for p2 in the p2 client or else the p2 will not know what therir thing is
-
-                System.out.println(iw.roomID);
-                this.gameID = iw.roomID;
-                iw = getInit();
-                int index = 0;
-                bg.toggleTurn();
             while (true) {
 
                 bw = getBoardWrapper();
@@ -83,26 +76,18 @@ public class ClientService implements Runnable{
                   //  System.out.println("Col:\t");
                    // col = sc.nextInt();
                    // sendMove(new MoveWrapper(row,col,'x'));
-                    if(pb == null) {
-                        bg.drawBoard(bw.getBoard());
-                        bg.toggleTurn();
-                        //Pair<Integer,Integer> mov = moves.get(index);
-
-                        Pair<Integer, Integer> mov = bg.getNextMove();
-                        while (mov == null) {
-                            mov = bg.getNextMove();
-                            System.out.println("LOL");
-
-                        }
-                        System.out.println("Move Captureed");
-                        int i = mov.getKey();
-                        int j = mov.getValue();
-                        sendMove(new MoveWrapper(i, j, 'x'));
+                    bg.toggleTurn();
+                    bg.drawBoard(bw.getBoard());
+                    //Pair<Integer,Integer> mov = moves.get(index);
+                    Pair<Integer,Integer> mov = bg.getNextMove();
+                    while(mov == null) {
+                        mov = bg.getNextMove();
+                        System.out.println("LOL");
                     }
-                    else {
-                        PlayerBehavior.MoveInfo mi = pb.getMove(bw.getBoard(), this.token);
-                        sendMove(new MoveWrapper(mi.getX(), mi.getY(), this.token));
-                    }
+                    int i = mov.getKey();
+                    int j = mov.getValue();
+                    sendMove(new MoveWrapper(i,j,'o'));
+                    index++;
                 }
                 else if(bw.getFlag() == P_FLAGS.ERROR_FATAL) {
                     System.out.println("bad move bruh");
@@ -110,18 +95,22 @@ public class ClientService implements Runnable{
                 }
                 else if(bw.getFlag() == P_FLAGS.TIE) {
                     System.out.println("TIE");
+                    bg.drawBoard(bw.getBoard());
                     break;
                 }
                 else if(bw.getFlag() == P_FLAGS.P1_WIN) {
                     System.out.println("Player 1 wins");
+                    bg.drawBoard(bw.getBoard());
                     break;
                 }
                 else if(bw.getFlag() == P_FLAGS.P2_WIN) {
                     System.out.println("Player 2 wins");
+                    bg.drawBoard(bw.getBoard());
                     break;
                 }
                 else if(bw.getFlag() == P_FLAGS.GAME_OVER) {
                     System.out.println("Game over, player disconnected");
+                    bg.drawBoard(bw.getBoard());
                     break;
                 }
 
@@ -151,24 +140,18 @@ public class ClientService implements Runnable{
     }
 
     //***************************************************************************
-    public ClientService(IPAddress serverIP, PortWrapper port, BoardGUI bg, PlayerBehavior pb, String name, char token, int gameID, P_FLAGS flag) throws IOException{
+    public ClientService(IPAddress serverIP, PortWrapper port, BoardGUI bg) throws IOException{
         socket = new Socket(serverIP.toString(),port.getPort());
 
         os = new ObjectOutputStream(socket.getOutputStream());
         is = new ObjectInputStream(socket.getInputStream());
         this.bg = bg;
-        this.pb = pb;
-        this.name = name;
-        this.token = token;
-        this.gameID = gameID;
-        this.flag = flag;
+
     }
     //***************************************************************************
 
 
-    public int getID() {
-        return gameID;
-    }
+
     //***************************************************************************
     public void sendInit(String playerName, char token, P_FLAGS flag) throws IOException {
         sendInit(new InitWrapper(flag, playerName, token, 0));
@@ -214,3 +197,4 @@ public class ClientService implements Runnable{
     //***************************************************************************
 }
 //************************************************************************************
+

@@ -176,16 +176,7 @@ public class Controller {
                     // TODO Add your PVP room creation code here
                     System.out.println("My name is " + getName());
                     System.out.println("My symbol is " + getSymbol());
-                    App.getPrimaryStage().setScene(new Scene(bg, 300, 300));
-                    try {
-                        ClientService player1 = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464), bg, null, getName(), getSymbol(), 0, P_FLAGS.CREATE);
-                        Thread thread1 = new Thread(player1);
-                        thread1.start();
 
-                    }
-                    catch(Exception ex) {
-                        ex.printStackTrace();
-                    }
 
                 });
 
@@ -209,31 +200,30 @@ public class Controller {
                     System.out.println("My symbol is " + getSymbol());
                     char othertoken;
                     int id;
-//                    try {
-//                        App.getPrimaryStage().setScene(new Scene(bg, 500, 500));
-//                        ClientService player1 = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464), bg, null, getName(), getSymbol(), 0);
-//                        Thread p1th = new Thread(player1);
-//                        p1th.start();
-//                        if(getSymbol() == 'x') {
-//                            othertoken = 'o';
-//                        }
-//                        else {
-//                            othertoken = 'x';
-//                        }
-//                        while(player1.getID() == 0) {
-//                            System.out.println("waiting for id");
-//                        }
-//                        id = player1.getID();
-//                        //ClientService player2 = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464), bg, new NPCEasy(), "computer", othertoken, id);
-//                        Thread p2th = new Thread(player2);
-//                        p2th.start();
-//                    }
-//                    catch(Exception ex) {
-//                        System.out.println("ruh roh raggy");
-//                        ex.printStackTrace();
-//                    }
+                    try {
+                        ClientService player1 = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464), bg, null, getName(), getSymbol(), 0);
+                        Thread p1th = new Thread(player1);
+                        p1th.start();
+                        if(getSymbol() == 'x') {
+                            othertoken = 'o';
+                        }
+                        else {
+                            othertoken = 'x';
+                        }
+                        while(player1.getID() == 0) {
+                            System.out.println("waiting for id");
+                        }
+                        id = player1.getID();
+                        ClientService player2 = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464), bg, new NPCEasy(), "computer", othertoken, id);
+                        Thread p2th = new Thread(player2);
+                        p2th.start();
+                    }
+                    catch(Exception ex) {
+                        System.out.println("ruh roh raggy");
+                        ex.printStackTrace();
+                    }
                 });
-
+        App.getPrimaryStage().setScene(bg);
     }
 
     //If the player wants to compete against the AI in a hard level,
@@ -266,16 +256,6 @@ public class Controller {
                         // TODO Add your PVP room joining code here
                         System.out.println("My name is " + getName());
                         System.out.println("The room is " + roomNumber);
-                        App.getPrimaryStage().setScene(new Scene(bg, 300, 300));
-                        try {
-                            ClientService player1 = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464), bg, null, getName(), getSymbol(), roomNumber, P_FLAGS.JOIN);
-                            Thread thread1 = new Thread(player1);
-                            thread1.start();
-
-                        }
-                        catch(Exception ex) {
-                            ex.printStackTrace();
-                        }
                     } catch(NumberFormatException exception) {
                         //System.out.println("Invalid room number");
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Invalid Room Number", ButtonType.OK);

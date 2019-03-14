@@ -20,7 +20,7 @@ public class App extends Application {
         try{
             // ClientService cs = new ClientService(new IPAddress("10.0.0.30"), new PortWrapper(6464) );
 
-            String ipAddress = "10.0.0.30";
+            String ipAddress = "127.0.1.1";
             System.out.println("Connecting to " + ipAddress);
             ClientService cs = new ClientService(new IPAddress(ipAddress), new PortWrapper(6464), board );
             Thread th = new Thread(cs);

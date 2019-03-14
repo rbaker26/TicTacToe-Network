@@ -78,8 +78,16 @@ public class ClientService implements Runnable{
                    // col = sc.nextInt();
                    // sendMove(new MoveWrapper(row,col,'x'));
                     bg.drawBoard(bw.getBoard());
+                    bg.toggleTurn();
                     //Pair<Integer,Integer> mov = moves.get(index);
+
                     Pair<Integer,Integer> mov = bg.getNextMove();
+                    while(mov == null) {
+                        mov = bg.getNextMove();
+                        System.out.println("LOL");
+
+                    }
+                    System.out.println("Move Captureed");
                     int i = mov.getKey();
                     int j = mov.getValue();
                     sendMove(new MoveWrapper(i,j,'x'));
@@ -189,4 +197,3 @@ public class ClientService implements Runnable{
     //***************************************************************************
 }
 //************************************************************************************
-

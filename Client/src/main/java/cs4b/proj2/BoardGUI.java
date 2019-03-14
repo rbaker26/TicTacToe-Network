@@ -10,9 +10,10 @@ import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
 import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
 
 
-/*
+/**
  * This board is a simple 3 x 3 grid set up to play tic-tac-toe using a javafx gridpane
  * The constructor iterates through each cell of the gridpane placing a pane with an ImageView.
  * Each pane is set up with an on click event to handle the toggling the tokens in the space
@@ -23,10 +24,11 @@ public class BoardGUI extends GridPane {
     private Image xImg;
     private Image oImg;
     private Image emptyImg;
-    private boolean myTurn = false;
+    private boolean myTurn = true;
     Pair<Integer,Integer> nextMove;
     private boolean xTurn = true;
     private Image myToken;
+
     BoardGUI() {
         try {
             xImg = new Image(new FileInputStream("src/main/resources/cs4b/proj1/img/X.png"));
@@ -58,13 +60,13 @@ public class BoardGUI extends GridPane {
 
 
                         if(myTurn /*only do this step it is my turn and if it is valid move*/) {
-
+                        System.out.println("HEREE");
 
                             if(token.getImage().equals(emptyImg)) {
                                 //this is a valid move
                                 nextMove =  new Pair<>(selectedRow, selectedCol);
 
-
+                                System.out.println("HEREdsfadsfE");
 
                                 token.setImage(myToken);
                                 //TODO put code here
@@ -115,10 +117,10 @@ public class BoardGUI extends GridPane {
                 int rowIndex = GridPane.getRowIndex(node);
 
                 switch(currentBoard.getPos(rowIndex, columnIndex)) {
-                    case 'X':
+                    case 'x':
                         image.setImage(xImg);
                         break;
-                    case 'O':
+                    case 'o':
                         image.setImage(oImg);
                         break;
                     case ' ':

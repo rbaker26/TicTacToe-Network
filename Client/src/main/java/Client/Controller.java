@@ -7,10 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.util.Random;
@@ -218,7 +215,10 @@ public class Controller {
                         System.out.println("My name is " + getName());
                         System.out.println("The room is " + roomNumber);
                     } catch(NumberFormatException exception) {
-                        System.out.println("Invalid room number");
+                        //System.out.println("Invalid room number");
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Invalid Room Number", ButtonType.OK);
+                        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                        alert.show();
                     }
 
                 });

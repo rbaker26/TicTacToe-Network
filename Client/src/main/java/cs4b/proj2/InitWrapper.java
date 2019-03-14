@@ -1,8 +1,9 @@
-package Client;
+package cs4b.proj2;
 
 import java.io.Serializable;
 
 public class InitWrapper implements Serializable {
+    private static final long serialVersionUID = 6529685098267757690L;
     public P_FLAGS flag;
     public String playerName;
     public char token;

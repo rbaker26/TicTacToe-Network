@@ -35,4 +35,4 @@ dependencies {
 }
 
 // Define the main class for the application
-mainClassName = 'Client.App'
+mainClassName = 'cs4b.proj2.App'

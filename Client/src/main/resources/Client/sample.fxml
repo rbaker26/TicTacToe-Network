@@ -68,8 +68,6 @@
             <Image url="@img/O.png" />
          </image>
       </ImageView>
-      <TextField fx:id="player1txt" layoutX="27.0" layoutY="353.0" prefHeight="31.0" prefWidth="119.0" promptText="Player 1 Name" />
-      <TextField fx:id="player2txt" layoutX="211.0" layoutY="353.0" prefHeight="31.0" prefWidth="119.0" promptText="Player 2 Name" />
       <Button fx:id="buttonOption4" layoutX="206.0" layoutY="155.0" mnemonicParsing="false" onMouseClicked="#button4Click" prefHeight="31.0" prefWidth="99.0" text="Join Room" textFill="#eb761d">
          <font>
             <Font name="Impact" size="15.0" />

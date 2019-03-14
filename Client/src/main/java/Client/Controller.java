@@ -1,5 +1,6 @@
 package Client;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,54 +13,42 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 public class Controller {
 
-    public static Controller getInstance() {
-        //System.out.println(instance);
-        return instance;
+    private RadioButton xButton;
+    private RadioButton oButton;
+    private TextField nameField;
+    private NumberTextField roomNumberField;
+
+    private String getName() {
+        return nameField.getText();
     }
-    private static Controller instance;
 
+    private char getSymbol() {
+        if(xButton.selectedProperty().get()) {
+            return 'X';
+        }
+        else if(oButton.selectedProperty().get()) {
+            return 'O';
+        }
+        else {
+            throw new RuntimeException("No symbol selected");
+        }
+    }
 
-    //On Mouse Click Options:
+    private String makeRandomName() {
+        final String[] names = {"Waldo", "Grandmaster" , "Steven", "Goku", "Yugi", "Ash", "Sean", "John", "Herbert"};
+        return names[new Random().nextInt(names.length)];
+    }
+
 
     //If the player wants to compete against another player
     //button1Click() will be incorporated.
 
-    public Controller() {
-        instance = this;
-    }
 
-
-
-    @FXML
-    private TextField player1txt;
-
-    @FXML
-    private TextField player2txt;
-
-
-    public String getPlayer1() {
-        String player1 = player1txt.getText();
-
-        if(player1 == "") {
-            player1 = "Player 1";
-        }
-
-        return player1;
-    }
-
-    public String getPlayer2() {
-        String player2 = player2txt.getText();
-
-        if(player2 == "") {
-            player2 = "Player 2";
-        }
-
-        return player2;
-    }
-
-    public void PlayerCredentials() {
+    public void showRoomSetupDialog(Scene origScene, EventHandler<ActionEvent> submitAction) {
 
         GridPane mainPane = new GridPane();
         mainPane.setAlignment(Pos.CENTER);
@@ -67,30 +56,48 @@ public class Controller {
         mainPane.setVgap(10);
         mainPane.setPadding(new Insets(25, 25, 25, 25));
 
-        Label playerName = new Label("Enter your name: ");
-        mainPane.add(playerName, 0, 1);
 
-        TextField typeInName = new TextField();
-        mainPane.add(typeInName, 1, 1);
+        nameField = new TextField();
+        nameField.setText(makeRandomName());
 
-        Label buttonInstructions = new Label("Choose your token:");
-
-        mainPane.add(buttonInstructions, 0, 2);
-
-
-
-        RadioButton xButton = new RadioButton("X");
-        RadioButton oButton = new RadioButton("O");
+        xButton = new RadioButton("X");
+        oButton = new RadioButton("O");
 
         final ToggleGroup symbolGroup = new ToggleGroup();
         xButton.setToggleGroup(symbolGroup);
         oButton.setToggleGroup(symbolGroup);
 
         HBox symbolBox = new HBox(10);
-
         symbolBox.getChildren().addAll(xButton, oButton);
 
+        // This will randomly select whether we are going to
+        // be X or O. The user can still change it, of course.
+        if((int)(Math.random() * 2) == 0) {
+            xButton.selectedProperty().setValue(true);
+        }
+        else {
+            oButton.selectedProperty().setValue(true);
+        }
+
+        Button submitButton = new Button("Submit");
+        submitButton.defaultButtonProperty().setValue(true);
+        submitButton.setOnAction(submitAction);
+
+        Button cancelButton = new Button("Cancel");
+        cancelButton.cancelButtonProperty().setValue(true);
+        cancelButton.setOnAction((ActionEvent event) ->
+                App.getPrimaryStage().setScene(origScene)
+        );
+
+
+        mainPane.add(new Label("Enter your name: "), 0, 1);
+        mainPane.add(nameField, 1, 1);
+        mainPane.add(new Label("Choose your token:"), 0, 2);
         mainPane.add(symbolBox, 1, 2);
+
+        mainPane.add(cancelButton, 0, 3);
+        mainPane.add(submitButton, 1, 3);
+
 
 
         //goes to the very bottom:
@@ -99,8 +106,48 @@ public class Controller {
         // mainPane.setResizable(false);
         App.getPrimaryStage().setScene(scene);
         App.getPrimaryStage().show();
+    }
+
+    public void showClientDialog(Scene origScene, EventHandler<ActionEvent> submitAction) {
+
+        GridPane mainPane = new GridPane();
+        mainPane.setAlignment(Pos.CENTER);
+        mainPane.setHgap(10);
+        mainPane.setVgap(10);
+        mainPane.setPadding(new Insets(25, 25, 25, 25));
 
 
+        nameField = new TextField();
+        nameField.setText(makeRandomName());
+
+        roomNumberField = new NumberTextField();
+
+        Button submitButton = new Button("Submit");
+        submitButton.defaultButtonProperty().setValue(true);
+        submitButton.setOnAction(submitAction);
+
+        Button cancelButton = new Button("Cancel");
+        cancelButton.cancelButtonProperty().setValue(true);
+        cancelButton.setOnAction((ActionEvent event) ->
+                App.getPrimaryStage().setScene(origScene)
+        );
+
+        mainPane.add(new Label("Enter your name: "), 0, 1);
+        mainPane.add(nameField, 1, 1);
+        mainPane.add(new Label("Room number:"), 0, 2);
+        mainPane.add(roomNumberField, 1, 2);
+
+        mainPane.add(cancelButton, 0, 3);
+        mainPane.add(submitButton, 1, 3);
+
+
+
+        //goes to the very bottom:
+        Scene scene = new Scene(mainPane, 500, 300);
+
+        // mainPane.setResizable(false);
+        App.getPrimaryStage().setScene(scene);
+        App.getPrimaryStage().show();
     }
 
     //When Create Room is clicked button1Click() is called.
@@ -113,9 +160,14 @@ public class Controller {
         //Call Socket class object to pass in IP address and port 6464.
 
 
-        int port = 6464;
+        //int port = 6464;
 
-
+        showRoomSetupDialog(
+                App.getPrimaryStage().getScene(),
+                (ActionEvent event) -> {
+                    System.out.println("My name is " + getName());
+                    System.out.println("My symbol is " + getSymbol());
+                });
 
 
 
@@ -129,6 +181,12 @@ public class Controller {
         System.out.println("Button 2 was clicked");
 
 
+        showRoomSetupDialog(
+                App.getPrimaryStage().getScene(),
+                (ActionEvent event) -> {
+                    System.out.println("My name is " + getName());
+                    System.out.println("My symbol is " + getSymbol());
+                });
     }
 
     //If the player wants to compete against the AI in a hard level,
@@ -138,8 +196,32 @@ public class Controller {
 
         System.out.println("Button 3 was clicked");
 
+        showRoomSetupDialog(
+                App.getPrimaryStage().getScene(),
+                (ActionEvent event) -> {
+                    System.out.println("My name is " + getName());
+                    System.out.println("My symbol is " + getSymbol());
+                });
     }
 
+    @FXML
+    private void button4Click() {
 
+        System.out.println("Button 4 was clicked");
+
+        showClientDialog(
+                App.getPrimaryStage().getScene(),
+                (ActionEvent event) -> {
+                    try {
+                        int roomNumber = Integer.parseInt(roomNumberField.getText());
+
+                        System.out.println("My name is " + getName());
+                        System.out.println("The room is " + roomNumber);
+                    } catch(NumberFormatException exception) {
+                        System.out.println("Invalid room number");
+                    }
+
+                });
+    }
 
 }

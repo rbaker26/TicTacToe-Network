@@ -1,7 +1,9 @@
-
+/*
 package cs4b.proj2;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -44,6 +46,7 @@ public class App extends Application {
         board.drawBoard(b);
     }
 
+
     public static void main(String[] args) {
         launch(args);
 //        Stage primaryStage;
@@ -59,7 +62,7 @@ public class App extends Application {
         return primaryStage;
     }
 }
-
+*/
 /*
 package Client;
 
@@ -93,8 +96,8 @@ public class App extends Application {
 }
 */
 
-/*
-package Client;
+
+package cs4b.proj2;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -116,6 +119,7 @@ import java.io.File;
 public class App extends Application {
 
     //Observer Signal- main captures, then it will call the board ui.
+    private static Stage primaryStage;
 
     Parent root;
     Scene startScene;
@@ -156,4 +160,3 @@ public class App extends Application {
     }
 }
 
-*/
